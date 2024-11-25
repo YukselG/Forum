@@ -1,0 +1,21 @@
+.comment-list {
+	width: 100%; /* Ensure it takes full width of the parent container */
+	margin-top: 20px; /* Add space above the comment list */
+}
+
+.comment-list table {
+	width: 100%; /* Ensure the table takes full width */
+	border-collapse: collapse; /* Improve spacing between cells */
+}
+
+.comment-list td {
+	padding: 10px; /* Add padding for better spacing */
+	border: 1px solid #dee2e6; /* Optional: Add borders for clarity */
+}
+
+.commentList {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	width: 100%;
+}

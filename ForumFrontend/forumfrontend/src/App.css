@@ -1,0 +1,145 @@
+/* Global Styles */
+body {
+	background-color: #f9f9f9; /* Light background for better contrast */
+	font-family: Arial, sans-serif;
+}
+
+/* Header Styles */
+header {
+	background-color: #c1e1c1; /* Pastel green for the header */
+	padding: 20px;
+}
+
+.header-logo {
+	max-width: 100px; /* Adjust logo size */
+}
+
+/* Footer Styles */
+.footer-content {
+	background-color: #2f4f4f; /* Dark slate gray for footer */
+	color: #ffffff; /* White text for contrast */
+	text-align: center;
+	padding: 15px 0;
+}
+
+/* Main Container Styles */
+.container {
+	margin-top: 20px;
+	border-radius: 8px;
+}
+
+/* Category List Styles */
+.table {
+	border: 1px solid #c1e1c1; /* Border color matching the pastel green */
+}
+
+.table-light {
+	background-color: #d0e8d0; /* Slightly darker green for table header */
+}
+
+.clickable-row:hover {
+	background-color: #a8d8a0; /* Lighter green on hover */
+}
+
+/* Card Styles for Posts and Comments */
+.card {
+	border: 1px solid #c1e1c1;
+	border-radius: 8px;
+	margin-bottom: 20px;
+	background-color: #ffffff; /* White background for cards */
+}
+
+.card-title {
+	color: #2f4f4f; /* Dark slate gray for titles */
+}
+
+/* Button Styles */
+.btn {
+	color: red;
+	border-radius: 5px;
+}
+
+.btn-primary {
+	background-color: #007bff; /* Bootstrap primary color */
+	border-color: #007bff;
+}
+
+.btn-outline-primary {
+	color: #007bff;
+	border-color: #007bff;
+}
+
+.btn-success {
+	background-color: #28a745; /* Green for create post button */
+	border-color: #28a745;
+}
+
+.btn:hover {
+	opacity: 0.9; /* Slightly dim buttons on hover */
+}
+
+/* Search Form Styles */
+#search-form .form-control {
+	border-radius: 20px; /* Rounded corners for input */
+}
+
+/* Post Create Styles */
+.form-create {
+	background-color: #f0f8ff; /* Alice blue for form background */
+	padding: 20px;
+	border-radius: 8px;
+}
+
+/* Comment Styles */
+.card-author {
+	font-weight: bold;
+}
+
+.card-date {
+	color: #6c757d; /* Muted color for dates */
+}
+
+/* Miscellaneous Styles */
+h3 {
+	color: #2f4f4f; /* Dark slate gray for headings */
+}
+
+.App {
+	text-align: center;
+	height: 100%;
+}
+
+.App-logo {
+	height: 40vmin;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.App-logo {
+		animation: App-logo-spin infinite 20s linear;
+	}
+}
+
+.App-header {
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
+}
+
+.App-link {
+	color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}

@@ -1,0 +1,48 @@
+header,
+footer {
+	background-color: #f8f9fa; /* Light gray background for header and footer */
+	padding: 1rem 0;
+}
+
+main {
+	padding: 20px; /* Adds padding around the main content */
+}
+
+header {
+	border-bottom: 1px solid #dee2e6; /* Adds subtle border for separation */
+}
+
+footer {
+	border-top: 1px solid #dee2e6; /* Adds subtle border for separation */
+	text-align: center;
+	padding: 1rem;
+}
+
+/* .main {
+	height: 100%;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: aqua;
+}
+
+.header {
+	flex: 0 0 15%;
+	background-color: lightblue; /* Optional: just for visibility 
+
+
+.outlet {
+	display: flex;
+	flex: 1 0 70%;
+	flex-direction: column;
+	background-color: lightgreen; /* Optional: just for visibility 
+	align-items: center;
+	justify-content: center;
+}
+
+.footer {
+	flex: 0 0 15%;
+	background-color: lightcoral; /* Optional: just for visibility 
+}
+ */

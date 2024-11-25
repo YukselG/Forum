@@ -1,0 +1,38 @@
+a {
+	text-decoration: none !important;
+}
+
+.postitem {
+	display: flex;
+	flex-direction: row;
+	background-color: yellow;
+	margin-top: 15px;
+	margin-bottom: 25px;
+	border-bottom: 1px solid #ddd; /* Add a border below each row */
+}
+
+.postitem td {
+	text-align: left; /* Align text to the left */
+	padding: 80px; /* Add some padding for better readability */
+}
+
+.post-title-description {
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 64%;
+	font-size: x-large;
+}
+
+.post-lastupdated {
+	flex: 0 0 17%;
+	font-size: x-large;
+}
+
+.post-comments {
+	flex: 0 0 17%;
+	font-size: x-large;
+}
+
+.titletd1 {
+	font-weight: bold;
+}

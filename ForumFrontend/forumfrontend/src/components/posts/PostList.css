@@ -1,0 +1,48 @@
+.clickable-row {
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+	background-color: #f8f9fa; /* Light gray background on hover */
+}
+
+.postList {
+	background-color: purple;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.postList table {
+	background-color: grey;
+	flex: 1;
+}
+
+.postList th {
+	padding: 24px 80px; /* Add some padding for better readability */
+	text-align: left; /* Align text to the left */
+	border-bottom: 1px solid #ddd; /* Add a border below each row */
+}
+
+.postList tr {
+	display: flex;
+	flex-direction: row;
+}
+
+.postList .th1 {
+	flex: 0 0 64%;
+	font-size: x-large;
+}
+
+.postList .th2 {
+	flex: 0 0 17%;
+	font-size: x-large;
+}
+
+.postList .th3 {
+	flex: 0 0 17%;
+	font-size: x-large;
+}

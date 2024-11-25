@@ -1,0 +1,87 @@
+.header-logo {
+	height: 50px; /* Adjust the logo size */
+	width: auto;
+}
+
+.user-buttons .btn {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#search-form {
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+#search-form input {
+	max-width: 100%; /* Ensure it uses available space */
+}
+
+/*.image {
+}
+
+.headercontent {
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+	height: 100%;
+	align-items: center;
+	justify-content: space-around;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+#search-form {
+	display: flex;
+	flex-direction: row;
+}
+
+#search-form input[type="search"] {
+	padding: 10px;
+	font-size: 17px;
+	border: 1px solid grey;
+	float: left;
+	background: #f1f1f1;
+}
+
+#search-form button {
+	background: #c1e6af;
+	float: left;
+	padding: 10px;
+	color: white;
+	font-size: 17px;
+	border: 1px solid grey;
+	cursor: pointer;
+	border-left: none;
+}
+
+#search-form button:hover {
+	background: #a4c195;
+}
+
+#search-form::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.user {
+	display: flex;
+	flex-direction: row;
+}
+
+.user button {
+	padding: 10px;
+	margin: 10px;
+	background: #c1e6af;
+	color: white;
+	font-weight: 500;
+	font-size: 17px;
+	border: 1px solid grey;
+}
+
+.user button:hover {
+	background: #a4c195;
+}
+*/

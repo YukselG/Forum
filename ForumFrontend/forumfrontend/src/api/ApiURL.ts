@@ -1,0 +1,3 @@
+// THE API URL SHOULD BE STORED IN A SECRET WAY, SO THAT IT CAN'T BE ACCESSED FROM THE OUTSIDE
+
+export const apiUrl = "https://localhost:7056/api";

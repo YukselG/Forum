@@ -1,0 +1,78 @@
+.clickable-row {
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	height: 80px; /* Ensure rows have more vertical space */
+}
+
+.clickable-row:hover {
+	background-color: #f8f9fa; /* Light gray hover effect */
+}
+
+.category-name,
+.category-description {
+	text-align: left; /* Align text to the left */
+}
+
+.category-name {
+	font-weight: bold; /* Emphasize the name */
+	font-size: 1.1em; /* Slightly larger font size */
+}
+
+.category-description {
+	font-size: 0.9em; /* Slightly smaller font size */
+	color: #6c757d; /* Use a subtle color for description */
+	margin-top: 4px; /* Add space between name and description */
+	word-wrap: break-word; /* Allow long words to wrap onto the next line */
+	overflow: hidden; /* Hide overflow text */
+	white-space: nowrap; /* Prevent text from wrapping */
+	text-overflow: ellipsis; /* Show ellipsis when text is too long */
+}
+
+.table th,
+.table td {
+	vertical-align: middle; /* Ensures consistent alignment */
+	padding: 16px; /* Add more padding for a spacious look */
+}
+
+.table th {
+	background-color: #e9ecef; /* Subtle background color for header */
+}
+
+.table tbody tr {
+	border-bottom: 8px solid #fff; /* Extra space between rows */
+}
+
+.categoryitem {
+	display: flex;
+	flex-direction: row;
+	background-color: yellow;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.categoryitem td {
+	padding: 80px; /* Add some padding for better readability */
+	text-align: left; /* Align text to the left */
+	border-bottom: 1px solid #ddd; /* Add a border below each row */
+	background-color: red;
+}
+
+.categoryitem .td1 {
+	flex: 0 0 20%;
+	font-size: x-large;
+}
+
+.categoryitem .td2 {
+	flex: 0 0 60%;
+	font-size: x-large;
+}
+
+.categoryitem .td3 {
+	flex: 0 0 20%;
+	font-size: x-large;
+}
+
+.divtd2 {
+	display: flex;
+	flex-direction: column;
+}

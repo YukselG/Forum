@@ -1,0 +1,63 @@
+.card {
+	border: 1px solid #dee2e6; /* Light border for the card */
+	border-radius: 0.5rem; /* Rounded corners */
+	margin-bottom: 2px;
+}
+
+.card-body {
+	padding: 1rem; /* Padding inside the card */
+}
+
+.card-text {
+	margin-bottom: 0.5rem; /* Space below the text */
+	text-align: left;
+}
+
+.card-author {
+	margin-bottom: 0.5rem; /* Space below the author */
+	font-family: cursive;
+	text-align: left;
+}
+
+.card-date {
+	margin-bottom: 0; /* No space below the date */
+	text-align: left;
+}
+
+/* Optional: You can add responsive styles */
+@media (max-width: 768px) {
+	.card-text,
+	.card-author,
+	.card-date {
+		font-size: 0.9em; /* Adjust font size on smaller screens */
+	}
+}
+
+.commentitem {
+	display: flex;
+	flex-direction: row;
+	background-color: aqua;
+	margin-top: 15px;
+	margin-bottom: 25px;
+	border: 1px solid #ddd; /* Add a border below each row */
+}
+
+.commentitem td {
+	text-align: left; /* Align text to the left */
+	padding: 20px; /* Add some padding for better readability */
+}
+
+.commentcontent {
+	flex: 0 0 64%;
+	font-size: x-large;
+}
+
+.commentdate {
+	flex: 0 0 17%;
+	font-size: x-large;
+}
+
+.commenauthor {
+	flex: 0 0 17%;
+	font-size: x-large;
+}

@@ -1,0 +1,18 @@
+.comment-form {
+	background-color: #f8f9fa;
+	padding: 20px;
+	border-radius: 5px;
+}
+
+.postDetail {
+	text-align: left;
+}
+
+.formelements {
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	margin-top: 15px;
+	margin-bottom: 25px;
+	font-size: x-large;
+}
