@@ -10,6 +10,7 @@ using ForumBackend.Models;
 using ForumBackend.Services.Interfaces;
 using ForumBackend.DTOs.CommentDTO;
 using ForumBackend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ForumBackend.Controllers
 {
@@ -26,6 +27,7 @@ namespace ForumBackend.Controllers
         }
 
         // GET: api/Comments
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommentDTO>>> GetComments()
         {
@@ -36,6 +38,7 @@ namespace ForumBackend.Controllers
         }
 
         // GET: api/Comments/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentDTO>> GetComment(int id)
         {

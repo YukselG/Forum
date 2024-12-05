@@ -11,6 +11,7 @@ using ForumBackend.Services.Interfaces;
 using ForumBackend.Services.Implementations;
 using ForumBackend.DTOs.CategoryDTOs;
 using ForumBackend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ForumBackend.Controllers
 {
@@ -28,6 +29,7 @@ namespace ForumBackend.Controllers
         }
 
         // GET: api/Categories
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTO >>> GetCategories()
         {

@@ -7,6 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using ForumBackend.Models;
 using dotenv.net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +22,7 @@ string dbUser = Environment.GetEnvironmentVariable("DB_USER");
 string dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 string dbName = Environment.GetEnvironmentVariable("DB_NAME");
 string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+string key = Environment.GetEnvironmentVariable("JWT_SECRET");
 
 string connectionString = $"Server={dbServer};Database={dbName};User ID={dbUser};Password={dbPassword};TrustServerCertificate=True;";
 
@@ -34,18 +40,69 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-// Add authorization
-builder.Services.AddAuthorization();
+
 // Activate Identity APIs
-builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ForumContext>();
-builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<ForumContext>();
+builder.Services.AddIdentityApiEndpoints<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
+//builder.Services.AddIdentityCore<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
+
+// Configure JWT authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "forum-backend",
+        ValidAudience = "forum-frontend",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+    };
+});
+
+// Add authorization
+builder.Services.AddAuthorization(options =>
+{
+    // "The fallback authorization policy requires all users to be authenticated, except for Razor Pages, controllers, or action methods with an authorization attribute. 
+    // For example, Razor Pages, controllers, or action methods with [AllowAnonymous] or [Authorize(PolicyName="MyPolicy")] use the applied authorization attribute rather than the fallback authorization policy."
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+});
 
 // the below for circular references, probably use dtos instead. When returning DTO, an infinite serilization loop wont happen
 /*builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);*/
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 // in-memory database for test purposes
 //builder.Services.AddDbContext<ForumContext>(options => options.UseInMemoryDatabase("forumTest"));
 builder.Services.AddDbContext<ForumContext>(options => options.UseSqlServer(connectionString));
@@ -68,6 +125,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowReactForumFrontend");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

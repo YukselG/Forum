@@ -11,6 +11,7 @@ using ForumBackend.Services.Interfaces;
 using ForumBackend.DTOs.PostDTO;
 using ForumBackend.Mappers;
 using ForumBackend.DTOs.PostDTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ForumBackend.Controllers
 {
@@ -28,6 +29,7 @@ namespace ForumBackend.Controllers
         }
 
         // GET: api/Posts
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetPosts()
         {
@@ -37,6 +39,7 @@ namespace ForumBackend.Controllers
         }
 
         // GET: api/Posts/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDTO>> GetPost(int id)
         {
