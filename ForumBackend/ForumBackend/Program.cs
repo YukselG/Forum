@@ -42,7 +42,7 @@ builder.Services.AddControllers();
 
 
 // Activate Identity APIs
-builder.Services.AddIdentityApiEndpoints<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
+builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<ForumContext>();
 //builder.Services.AddIdentityCore<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
 
 // Configure JWT authentication
