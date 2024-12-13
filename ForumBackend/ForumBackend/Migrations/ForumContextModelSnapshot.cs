@@ -48,7 +48,7 @@ namespace ForumBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ForumBackend.Models.Comment", b =>
@@ -79,7 +79,7 @@ namespace ForumBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("ForumBackend.Models.Post", b =>
@@ -115,7 +115,7 @@ namespace ForumBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("ForumBackend.Models.User", b =>

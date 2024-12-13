@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ForumBackend.Data
 {
-    public class ForumContext : IdentityDbContext<User>
+    public class ForumContext : IdentityDbContext<User, Role, string>
     {
         public ForumContext(DbContextOptions options) : base(options)
         {
