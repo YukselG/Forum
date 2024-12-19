@@ -12,7 +12,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ForumBackend.Services;
+using ForumBackend.Services.HelperServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,7 +43,7 @@ builder.Services.AddControllers();
 
 
 // Activate Identity APIs
- builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<ForumContext>();
+builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<ForumContext>().AddUserManager<CustomUserManager>();
 //builder.Services.AddIdentityCore<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
 
 // Configure JWT authentication
@@ -122,7 +122,7 @@ using (var scope = app.Services.CreateScope())
     await seeder.SeedRolesAsync();
 }
 
-app.MapIdentityApi<User>();
+app.MapIdentityApi<User>().AllowAnonymous();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
