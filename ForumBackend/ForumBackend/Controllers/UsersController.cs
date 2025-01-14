@@ -1,6 +1,7 @@
 ﻿using ForumBackend.DTOs.UserDTOs;
 using ForumBackend.Mappers;
 using ForumBackend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumBackend.Controllers
@@ -16,6 +17,7 @@ namespace ForumBackend.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
@@ -24,6 +26,7 @@ namespace ForumBackend.Controllers
             return Ok(usersDTO);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("id")]
         public async Task<ActionResult<UserDTO>> GetUser(string id)
         {
@@ -39,6 +42,7 @@ namespace ForumBackend.Controllers
             return Ok(userDTO);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("id")]
         public async Task<IActionResult> DeleteUser(string id)
         {

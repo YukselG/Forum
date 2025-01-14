@@ -23,7 +23,7 @@ string dbUser = Environment.GetEnvironmentVariable("DB_USER");
 string dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 string dbName = Environment.GetEnvironmentVariable("DB_NAME");
 string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-string key = Environment.GetEnvironmentVariable("JWT_SECRET");
+// string key = Environment.GetEnvironmentVariable("JWT_SECRET");
 
 string connectionString = $"Server={dbServer};Database={dbName};User ID={dbUser};Password={dbPassword};TrustServerCertificate=True;";
 
@@ -46,7 +46,8 @@ builder.Services.AddControllers();
 builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<ForumContext>().AddUserManager<CustomUserManager>();
 //builder.Services.AddIdentityCore<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
 
-// Configure JWT authentication
+/*
+// Configuration of JWT Bearer authentication -- requires generating JWT tokens manually
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,7 +65,21 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = "forum-frontend",
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            // Sanitize the exception message by replacing invalid characters
+            var sanitizedMessage = new string(context.Exception.Message.Where(c => !char.IsControl(c)).ToArray());
+
+            // Add the sanitized message to the header
+            context.Response.Headers.Add("Authentication-Failure", sanitizedMessage);
+            return Task.CompletedTask;
+        }
+    };
 });
+*/
 
 // Add authorization
 builder.Services.AddAuthorization(options =>
@@ -83,7 +98,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+        Description = "Authorization header using the Identity Bearer scheme. Example: 'Bearer {token}'",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey
