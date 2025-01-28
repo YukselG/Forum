@@ -1,5 +1,6 @@
 ﻿using ForumBackend.DTOs.CategoryDTOs;
 using ForumBackend.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumBackend.Mappers
 {
@@ -14,6 +15,16 @@ namespace ForumBackend.Mappers
                 Description = category.Description,
                 NumberOfPosts = category.Posts.Count,
                 UserId = category.UserId,
+            };
+        }
+
+        public static Category CreateCategoryDTOtoCategory (this CreateCategoryDTO createCategoryDTO)
+        {
+            return new Category
+            {
+                Name = createCategoryDTO.Name,
+                Description = createCategoryDTO.Description,
+                UserId = createCategoryDTO.UserId,
             };
         }
     }

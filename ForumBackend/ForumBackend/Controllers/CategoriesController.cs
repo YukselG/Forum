@@ -93,16 +93,18 @@ namespace ForumBackend.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Category>> PostCategory(CreateCategoryDTO createCategoryDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _categoriesService.CreateCategoryAsync(category);
+            var createCategory = createCategoryDTO.CreateCategoryDTOtoCategory();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            await _categoriesService.CreateCategoryAsync(createCategory);
+
+            return CreatedAtAction("GetCategory", new { id = createCategory.Id }, createCategory);
         }
 
         // DELETE: api/Categories/5
