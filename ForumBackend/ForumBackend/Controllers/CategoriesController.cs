@@ -63,12 +63,23 @@ namespace ForumBackend.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, UpdateCategoryDTO updateCategoryDTO)
         {
-            if (id != category.Id)
+            if (id != updateCategoryDTO.Id)
             {
                 return BadRequest();
             }
+
+            // fetching the category
+            var category = await _categoriesService.GetCategoryByIdAsync(id);
+
+            if(category == null)
+            {
+                return NotFound();
+            }
+
+            // update category properties
+            category.UpdateCategoryDTOtoCategory(updateCategoryDTO);
 
             try
             {
@@ -93,18 +104,20 @@ namespace ForumBackend.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(CreateCategoryDTO createCategoryDTO)
+        public async Task<ActionResult<CategoryDTO>> PostCategory(CreateCategoryDTO createCategoryDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var createCategory = createCategoryDTO.CreateCategoryDTOtoCategory();
+            var category = createCategoryDTO.CreateCategoryDTOtoCategory();
 
-            await _categoriesService.CreateCategoryAsync(createCategory);
+            await _categoriesService.CreateCategoryAsync(category);
 
-            return CreatedAtAction("GetCategory", new { id = createCategory.Id }, createCategory);
+            var categoryDTO = category.ToCategoryDTO();
+
+            return CreatedAtAction("GetCategory", new { id = category.Id }, categoryDTO);
         }
 
         // DELETE: api/Categories/5
