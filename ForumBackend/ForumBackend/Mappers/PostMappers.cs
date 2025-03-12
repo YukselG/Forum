@@ -32,5 +32,11 @@ namespace ForumBackend.Mappers
                 CategoryId = createPostDTO.CategoryId,
             };
         }
+
+        public static void UpdatePostDTOtoPost (this Post post, UpdatePostDTO updatePostDTO)
+        {
+            post.Title = updatePostDTO.Title;
+            post.Description = updatePostDTO.Description;
+        }
     }
 }

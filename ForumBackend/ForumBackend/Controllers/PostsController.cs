@@ -58,16 +58,27 @@ namespace ForumBackend.Controllers
         // PUT: api/Posts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, Post post)
+        public async Task<IActionResult> PutPost(int id, UpdatePostDTO updatePostDTO)
         {
-            if (id != post.Id)
+            if (id != updatePostDTO.Id)
             {
                 return BadRequest();
             }
 
+            // fetch the specific post
+            var post = await _postService.GetPostByIdAsync(id);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            // update post values
+            post.UpdatePostDTOtoPost(updatePostDTO);
+
             try
             {
-                await _postService.UpdatePostAsync(id, post);
+                await _postService.UpdatePostAsync(post);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,10 +105,12 @@ namespace ForumBackend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var createPost = createPostDTO.CreatePostDTOtoPost();
-            await _postService.CreatePostAsync(createPost);
+            var post = createPostDTO.CreatePostDTOtoPost();
+            await _postService.CreatePostAsync(post);
 
-            return CreatedAtAction("GetPost", new { id = createPost.Id }, createPost);
+            var postDTO = post.ToPostDTO();
+
+            return CreatedAtAction("GetPost", new { id = postDTO.Id }, postDTO);
         }
 
         // DELETE: api/Posts/5

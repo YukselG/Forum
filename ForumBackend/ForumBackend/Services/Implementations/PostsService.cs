@@ -20,7 +20,7 @@ namespace ForumBackend.Services.Implementations
 
         public async Task<Post?> GetPostByIdAsync(int id)
         {
-            return await _context.Posts.Include(p => p.Comments).FirstOrDefaultAsync();
+            return await _context.Posts.Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Post> CreatePostAsync(Post post)
@@ -31,7 +31,7 @@ namespace ForumBackend.Services.Implementations
             return post;
         }
 
-        public async Task UpdatePostAsync(int id, Post post)
+        public async Task UpdatePostAsync(Post post)
         {
             _context.Entry(post).State = EntityState.Modified;
             await _context.SaveChangesAsync();

@@ -10,7 +10,7 @@ namespace ForumBackend.Services.Interfaces
 
         Task<Post> CreatePostAsync(Post post);
 
-        Task UpdatePostAsync(int id, Post post);
+        Task UpdatePostAsync(Post post);
 
         Task DeletePostAsync(Post post);
 
