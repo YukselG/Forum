@@ -98,7 +98,7 @@ namespace ForumBackend.Controllers
         // POST: api/Posts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CreatePostDTO>> PostPost(CreatePostDTO createPostDTO)
+        public async Task<ActionResult<PostDTO>> PostPost(CreatePostDTO createPostDTO)
         {
             if(!ModelState.IsValid)
             {
