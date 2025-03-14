@@ -31,7 +31,7 @@ namespace ForumBackend.Services.Implementations
             return comment;
         }
 
-        public async Task UpdateCommentAsync(int id, Comment comment)
+        public async Task UpdateCommentAsync(Comment comment)
         {
             _context.Entry(comment).State = EntityState.Modified;
             await _context.SaveChangesAsync();

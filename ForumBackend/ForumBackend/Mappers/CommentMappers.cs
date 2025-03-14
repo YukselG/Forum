@@ -27,5 +27,10 @@ namespace ForumBackend.Mappers
                 PostId = createCommentDTO.PostId,
             };
         }
+
+        public static void UpdateCommentDTOtoComment (this Comment comment, UpdateCommentDTO updateCommentDTO)
+        {
+            comment.Content = updateCommentDTO.Content;
+        }
     }
 }

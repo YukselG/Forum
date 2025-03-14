@@ -7,7 +7,7 @@ namespace ForumBackend.Services.Interfaces
         Task<List<Comment>> GetAllCommentsAsync();
         Task<Comment?> GetCommentByIdAsync(int id);
         Task<Comment> CreateCommentAsync(Comment comment);
-        Task UpdateCommentAsync(int id, Comment comment);
+        Task UpdateCommentAsync(Comment comment);
         Task DeleteCommentAsync(Comment comment);
         Task<bool> CheckIfCommentExists(int id);
     }

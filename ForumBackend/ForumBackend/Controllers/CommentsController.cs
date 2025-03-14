@@ -57,16 +57,26 @@ namespace ForumBackend.Controllers
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
+        public async Task<IActionResult> PutComment(int id, UpdateCommentDTO updateCommentDTO)
         {
-            if (id != comment.Id)
+            if (id != updateCommentDTO.Id)
             {
                 return BadRequest();
             }
 
+            // fetching the comment
+            var comment = await _commentsService.GetCommentByIdAsync(id);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            comment.UpdateCommentDTOtoComment(updateCommentDTO);
+
             try
             {
-                await _commentsService.UpdateCommentAsync(id, comment);
+                await _commentsService.UpdateCommentAsync(comment);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -86,17 +96,20 @@ namespace ForumBackend.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CreateCommentDTO>> PostComment(CreateCommentDTO createCommentDTO)
+        public async Task<ActionResult<CommentDTO>> PostComment(CreateCommentDTO createCommentDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var createComment = createCommentDTO.CreateCommentDTOtoComment();
-            await _commentsService.CreateCommentAsync(createComment);
+            var comment = createCommentDTO.CreateCommentDTOtoComment();
 
-            return CreatedAtAction("GetComment", new { id = createComment.Id }, createComment);
+            await _commentsService.CreateCommentAsync(comment);
+
+            var commentDTO = comment.ToCommentDTO();
+
+            return CreatedAtAction("GetComment", new { id = commentDTO.Id }, commentDTO);
         }
 
         // DELETE: api/Comments/5
