@@ -23,7 +23,7 @@ namespace ForumBackend.Mappers
             {
                 Content = createCommentDTO.Content,
                 UserId = createCommentDTO.UserId,
-                DateOfCreation = createCommentDTO.DateOfCreation,
+                DateOfCreation = DateTime.Now,
                 PostId = createCommentDTO.PostId,
             };
         }

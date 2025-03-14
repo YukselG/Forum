@@ -13,7 +13,7 @@ namespace ForumBackend.DTOs.PostDTOs
         public string Description { get; set; } = string.Empty;
         [Required]
         public string UserId { get; set; } = string.Empty;
-        public DateTime DateOfCreation { get; set; } = DateTime.Now;
+        //public DateTime DateOfCreation { get; set; } = DateTime.Now;
         public int CategoryId { get; set; }
     }
 }

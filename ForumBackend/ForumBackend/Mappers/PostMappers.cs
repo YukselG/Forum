@@ -28,7 +28,7 @@ namespace ForumBackend.Mappers
                 Title = createPostDTO.Title,
                 Description = createPostDTO.Description,
                 UserId = createPostDTO.UserId,
-                DateOfCreation = createPostDTO.DateOfCreation,
+                DateOfCreation = DateTime.Now,
                 CategoryId = createPostDTO.CategoryId,
             };
         }
