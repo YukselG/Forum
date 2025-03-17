@@ -35,7 +35,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactForumFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000").AllowAnyHeader();
+            policy.WithOrigins("http://localhost:3000").AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
         });
 });
 
@@ -45,6 +47,26 @@ builder.Services.AddControllers();
 // Activate Identity APIs
 builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<ForumContext>().AddUserManager<CustomUserManager>();
 //builder.Services.AddIdentityCore<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
+
+// the below is for cookie-based authentication. Suited for browsers, but not mobile
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
+
+    // SameSite=None in local development (frontend and backend on different origins (ports))
+    // Should be lax or strict in production 
+    options.Cookie.SameSite = SameSiteMode.None;
+
+    options.LoginPath = "/login";
+    options.LogoutPath = "/logout";
+
+    options.SlidingExpiration = true; // Reset expiration on activity
+
+});
 
 /*
 // Configuration of JWT Bearer authentication -- requires generating JWT tokens manually
@@ -94,6 +116,11 @@ builder.Services.AddAuthorization(options =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);*/
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
+/*
+// swagger for bearer token:
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -119,6 +146,8 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+*/
+
 // in-memory database for test purposes
 //builder.Services.AddDbContext<ForumContext>(options => options.UseInMemoryDatabase("forumTest"));
 builder.Services.AddDbContext<ForumContext>(options => options.UseSqlServer(connectionString));
