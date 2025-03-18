@@ -17,12 +17,12 @@ namespace ForumBackend.Mappers
             };
         }
 
-        public static Comment CreateCommentDTOtoComment (this CreateCommentDTO createCommentDTO)
+        public static Comment CreateCommentDTOtoComment (this CreateCommentDTO createCommentDTO, string userId)
         {
             return new Comment
             {
                 Content = createCommentDTO.Content,
-                UserId = createCommentDTO.UserId,
+                UserId = userId,
                 DateOfCreation = DateTime.Now,
                 PostId = createCommentDTO.PostId,
             };

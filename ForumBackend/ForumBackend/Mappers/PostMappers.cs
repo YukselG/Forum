@@ -21,13 +21,13 @@ namespace ForumBackend.Mappers
             };
         }
 
-        public static Post CreatePostDTOtoPost (this CreatePostDTO createPostDTO)
+        public static Post CreatePostDTOtoPost (this CreatePostDTO createPostDTO, string userId)
         {
             return new Post
             {
                 Title = createPostDTO.Title,
                 Description = createPostDTO.Description,
-                UserId = createPostDTO.UserId,
+                UserId = userId,
                 DateOfCreation = DateTime.Now,
                 CategoryId = createPostDTO.CategoryId,
             };

@@ -11,6 +11,7 @@ using ForumBackend.Services.Interfaces;
 using ForumBackend.DTOs.CommentDTO;
 using ForumBackend.Mappers;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ForumBackend.Controllers
 {
@@ -98,12 +99,19 @@ namespace ForumBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<CommentDTO>> PostComment(CreateCommentDTO createCommentDTO)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var comment = createCommentDTO.CreateCommentDTOtoComment();
+            var comment = createCommentDTO.CreateCommentDTOtoComment(userId);
 
             await _commentsService.CreateCommentAsync(comment);
 

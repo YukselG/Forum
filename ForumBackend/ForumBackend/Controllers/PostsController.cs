@@ -12,6 +12,7 @@ using ForumBackend.DTOs.PostDTO;
 using ForumBackend.Mappers;
 using ForumBackend.DTOs.PostDTOs;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ForumBackend.Controllers
 {
@@ -100,12 +101,19 @@ namespace ForumBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<PostDTO>> PostPost(CreatePostDTO createPostDTO)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var post = createPostDTO.CreatePostDTOtoPost();
+            var post = createPostDTO.CreatePostDTOtoPost(userId);
             await _postService.CreatePostAsync(post);
 
             var postDTO = post.ToPostDTO();
