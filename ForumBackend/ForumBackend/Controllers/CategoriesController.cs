@@ -12,6 +12,7 @@ using ForumBackend.Services.Implementations;
 using ForumBackend.DTOs.CategoryDTOs;
 using ForumBackend.Mappers;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ForumBackend.Controllers
 {
@@ -106,12 +107,19 @@ namespace ForumBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoryDTO>> PostCategory(CreateCategoryDTO createCategoryDTO)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var category = createCategoryDTO.CreateCategoryDTOtoCategory();
+            var category = createCategoryDTO.CreateCategoryDTOtoCategory(userId);
 
             await _categoriesService.CreateCategoryAsync(category);
 

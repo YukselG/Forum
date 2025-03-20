@@ -10,6 +10,6 @@ namespace ForumBackend.DTOs.CategoryDTOs
         [Required]
         [StringLength(300)]
         public string Description { get; set; } = string.Empty;
-        public string UserId { get; set; } = string.Empty;
+        //public string UserId { get; set; } = string.Empty;
     }
 }

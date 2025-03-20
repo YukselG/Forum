@@ -18,13 +18,13 @@ namespace ForumBackend.Mappers
             };
         }
 
-        public static Category CreateCategoryDTOtoCategory (this CreateCategoryDTO createCategoryDTO)
+        public static Category CreateCategoryDTOtoCategory (this CreateCategoryDTO createCategoryDTO, string userId)
         {
             return new Category
             {
                 Name = createCategoryDTO.Name,
                 Description = createCategoryDTO.Description,
-                UserId = createCategoryDTO.UserId,
+                UserId = userId,
             };
         }
 
