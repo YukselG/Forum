@@ -11,7 +11,7 @@ export interface Post {
 export type CreatePostData = {
 	title: string;
 	description: string;
-	author: "Hans";
+	//userId: string;
 	categoryId: number;
-	//dateOfCreation: Date;
+	//dateOfCreation: string;
 };

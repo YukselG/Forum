@@ -69,7 +69,13 @@ export default function PostDetail() {
 						<label htmlFor="comment-content" className="form-label">
 							Add a Comment
 						</label>
-						<textarea className="form-control" name="comment-content" id="comment-content" rows={5} required></textarea>
+						<textarea
+							className="form-control"
+							name="comment-content"
+							id="comment-content"
+							rows={5}
+							required
+						></textarea>
 					</div>
 					<button type="submit" className="btn btn-primary">
 						Add Comment
@@ -109,14 +115,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 	const comment: CreateCommentData = {
 		content: formData.get("comment-content") as string,
-		author: "Ole",
 		postId: postId,
 	};
 
 	console.log(comment);
 
 	try {
-		const createdComemnt = await CreateComment(comment);
+		const createdComment = await CreateComment(comment);
 		return redirect(``);
 	} catch (error) {
 		console.error("Failed when calling CreateComment", error);

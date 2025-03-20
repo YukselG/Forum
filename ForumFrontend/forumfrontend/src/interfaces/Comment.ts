@@ -8,7 +8,7 @@ export interface Comment {
 
 export type CreateCommentData = {
 	content: string;
-	author: "Ole";
+	//userId: string;
 	postId: Number;
 	//dateOfCreation: Date
 };

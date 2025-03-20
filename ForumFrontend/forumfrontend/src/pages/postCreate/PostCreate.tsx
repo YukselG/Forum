@@ -59,7 +59,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 	const post: CreatePostData = {
 		title: formData.get("title") as string,
 		description: formData.get("description") as string,
-		author: "Hans", //hardcoded at the moment
 		categoryId: categoryId,
 	};
 
