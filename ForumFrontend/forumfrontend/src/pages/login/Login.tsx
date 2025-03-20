@@ -1,26 +1,37 @@
 import React, { FormEvent, useState } from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
+import { ActionFunctionArgs, Form, Link, useNavigate, redirect } from "react-router-dom";
+import { LoginCredentials } from "../../interfaces/LoginCredentials";
+import { LoginUser } from "../../api/services/loginService/LoginService";
 
 export default function Login() {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	//const [email, setEmail] = useState("");
+	//const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 
 	const navigate = useNavigate();
 
-	const handleSubmit = async (e: FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setError("");
 
 		try {
-			// TODO: Replace with actual login logic
-			// const response = await loginUser({ email, password });
-			// if (response.success) {
-			//     navigate('/');
-			// }
-			console.log("Login submitted", { email });
-			navigate("/");
+			const formData = new FormData(e.currentTarget);
+
+			const loginCredentials: LoginCredentials = {
+				email: formData.get("email") as string,
+				password: formData.get("password") as string,
+			};
+
+			const response = await LoginUser(loginCredentials);
+
+			if (response) {
+				console.log("Login submitted: response = " + response);
+				navigate("/");
+			} else {
+				console.log("Login submitted: response not success");
+			}
 		} catch (err) {
+			console.log(err);
 			setError("Login failed. Please check your credentials.");
 		}
 	};
@@ -37,17 +48,18 @@ export default function Login() {
 									{error}
 								</div>
 							)}
-							<Form onSubmit={handleSubmit} className="form-create">
+							<Form onSubmit={handleSubmit} method="post" className="form-create" id="login-form">
 								<div className="mb-3">
 									<label htmlFor="email" className="form-label">
 										Email address
 									</label>
 									<input
+										name="email"
 										type="email"
 										className="form-control"
 										id="email"
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
+										//value={email}
+										//onChange={(e) => setEmail(e.target.value)}
 										required
 									/>
 								</div>
@@ -56,11 +68,12 @@ export default function Login() {
 										Password
 									</label>
 									<input
+										name="password"
 										type="password"
 										className="form-control"
 										id="password"
-										value={password}
-										onChange={(e) => setPassword(e.target.value)}
+										//value={password}
+										//onChange={(e) => setPassword(e.target.value)}
 										required
 									/>
 								</div>
@@ -80,3 +93,25 @@ export default function Login() {
 		</div>
 	);
 }
+
+// export async function action({ request }: ActionFunctionArgs) {
+// 	const formData = await request.formData();
+
+// 	const loginCredentials: LoginCredentials = {
+// 		email: formData.get("email") as string,
+// 		password: formData.get("password") as string,
+// 	};
+
+// 	console.log(loginCredentials.email);
+// 	console.log(loginCredentials.password);
+
+// 	try {
+// 		const userLogin = await LoginUser(loginCredentials);
+// 		console.log("test");
+// 		console.log(userLogin);
+// 		return redirect("/");
+// 	} catch (error) {
+// 		console.error("Failed when calling LoginUser", error);
+// 		throw new Error("Login attempt failed");
+// 	}
+// }

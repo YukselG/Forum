@@ -24,6 +24,7 @@ export async function CreateComment(comment: CreateCommentData) {
 		headers: {
 			"Content-Type": "application/json",
 		},
+		credentials: "include",
 	});
 
 	if (!response.ok) {

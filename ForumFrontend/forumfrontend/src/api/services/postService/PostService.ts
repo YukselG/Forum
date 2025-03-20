@@ -23,6 +23,7 @@ export async function CreatePost(post: CreatePostData) {
 		headers: {
 			"Content-Type": "application/json",
 		},
+		credentials: "include",
 	});
 
 	if (!response.ok) {
