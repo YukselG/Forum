@@ -3,9 +3,12 @@ import "./Header.css";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authentication/AuthContext";
 
 export default function Header() {
 	const navigate = useNavigate();
+
+	const { isAuthenticated, logout } = useAuth();
 
 	function goToLogin() {
 		let path = "/login";
@@ -15,6 +18,15 @@ export default function Header() {
 	function goToRegister() {
 		let path = "/register";
 		navigate(path);
+	}
+
+	async function handleLogout() {
+		try {
+			await logout();
+			navigate("/");
+		} catch (err) {
+			console.error("Logout from navbar failed", err);
+		}
 	}
 
 	return (
@@ -42,12 +54,20 @@ export default function Header() {
 				</div>
 				<div className="col-md-4 col-12 text-center text-md-end">
 					<div className="user-buttons">
-						<button className="btn btn-outline-primary me-2" onClick={goToRegister}>
-							Register
-						</button>
-						<button className="btn btn-primary" onClick={goToLogin}>
-							Login
-						</button>
+						{isAuthenticated ? (
+							<button className="btn btn-danger" onClick={handleLogout}>
+								Logout
+							</button>
+						) : (
+							<>
+								<button className="btn btn-outline-primary me-2" onClick={goToRegister}>
+									Register
+								</button>
+								<button className="btn btn-primary" onClick={goToLogin}>
+									Login
+								</button>
+							</>
+						)}
 					</div>
 				</div>
 			</div>

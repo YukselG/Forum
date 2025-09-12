@@ -14,6 +14,7 @@ import PostListPage from "./pages/postListPage/PostListPage";
 import PostCreate, { action as PostCreateAction } from "./pages/postCreate/PostCreate";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
+import { AuthProvider } from "./context/authentication/AuthContext";
 function App() {
 	const router = createBrowserRouter([
 		{
@@ -56,7 +57,9 @@ function App() {
 
 	return (
 		<div className="App">
-			<RouterProvider router={router} />
+			<AuthProvider>
+				<RouterProvider router={router} />
+			</AuthProvider>
 		</div>
 	);
 }

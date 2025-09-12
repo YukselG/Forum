@@ -1,7 +1,8 @@
 import React, { FormEvent, useState } from "react";
 import { ActionFunctionArgs, Form, Link, useNavigate, redirect } from "react-router-dom";
 import { LoginCredentials } from "../../interfaces/LoginCredentials";
-import { LoginUser } from "../../api/services/loginService/LoginService";
+import { LoginUser } from "../../api/services/accountService/LoginService";
+import { useAuth } from "../../context/authentication/AuthContext";
 
 export default function Login() {
 	//const [email, setEmail] = useState("");
@@ -9,6 +10,8 @@ export default function Login() {
 	const [error, setError] = useState("");
 
 	const navigate = useNavigate();
+
+	const { login } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -22,14 +25,8 @@ export default function Login() {
 				password: formData.get("password") as string,
 			};
 
-			const response = await LoginUser(loginCredentials);
-
-			if (response) {
-				console.log("Login submitted: response = " + response);
-				navigate("/");
-			} else {
-				console.log("Login submitted: response not success");
-			}
+			await login(loginCredentials);
+			navigate("/");
 		} catch (err) {
 			console.log(err);
 			setError("Login failed. Please check your credentials.");
