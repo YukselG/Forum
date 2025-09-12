@@ -23,5 +23,12 @@ namespace ForumBackend.Controllers
 
             return Ok(new { message = "Logged out successfully" });
         }
+
+        [Authorize]
+        [HttpGet("check-auth")]
+        public IActionResult CheckAuth()
+        {
+            return Ok(new { message = "Authenticated" });
+        }
     }
 }
