@@ -3,8 +3,11 @@ import "./PostCreate.css";
 import { CreatePost } from "../../api/services/postService/PostService";
 import { CreatePostData } from "../../interfaces/Post";
 import { useState } from "react";
+import { useAuth } from "../../context/authentication/AuthContext";
 
 export default function PostCreate() {
+	const { isAuthenticated } = useAuth();
+
 	return (
 		<div className="container mt-4 form-create">
 			<Form method="post" id="create-post">
@@ -35,9 +38,15 @@ export default function PostCreate() {
 						required
 					></textarea>
 				</div>
-				<button type="submit" className="btn btn-success">
-					Create Post!
-				</button>
+				{isAuthenticated ? (
+					<button type="submit" className="btn btn-success">
+						Create Post!
+					</button>
+				) : (
+					<button type="button" className="btn btn-secondary" disabled>
+						Login required to create post
+					</button>
+				)}
 			</Form>
 		</div>
 	);
