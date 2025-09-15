@@ -7,6 +7,7 @@ import "./postDetail.css";
 import GetAllComments, { CreateComment } from "../../api/services/commentService/CommentService";
 import { GetPostById } from "../../api/services/postService/PostService";
 import { useEffect } from "react";
+import { useAuth } from "../../context/authentication/AuthContext";
 
 /* type LoaderData = {
 	post: PostType;
@@ -16,6 +17,8 @@ import { useEffect } from "react";
 export default function PostDetail() {
 	const { post, comments } = useLoaderData() as { post: PostType; comments: CommentType[] };
 	const location = useLocation();
+
+	const { isAuthenticated } = useAuth();
 
 	// Effect to reset form when navigation occurs (successful submission of form)
 	useEffect(() => {
@@ -77,9 +80,15 @@ export default function PostDetail() {
 							required
 						></textarea>
 					</div>
-					<button type="submit" className="btn btn-primary">
-						Add Comment
-					</button>
+					{isAuthenticated ? (
+						<button type="submit" className="btn btn-primary">
+							Add Comment
+						</button>
+					) : (
+						<button type="button" className="btn btn-secondary" disabled>
+							Login required to create comment
+						</button>
+					)}
 				</Form>
 			</div>
 		</div>
