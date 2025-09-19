@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ForumBackend.DTOs.CommentDTO;
+using ForumBackend.Mappers;
+using ForumBackend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ForumBackend.Data;
-using ForumBackend.Models;
-using ForumBackend.Services.Interfaces;
-using ForumBackend.DTOs.CommentDTO;
-using ForumBackend.Mappers;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace ForumBackend.Controllers
@@ -73,6 +66,14 @@ namespace ForumBackend.Controllers
                 return NotFound();
             }
 
+            // get user to make sure only the owner of the comment can edit it
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (comment.UserId != userId)
+            {
+                return Forbid();
+            }
+
             comment.UpdateCommentDTOtoComment(updateCommentDTO);
 
             try
@@ -128,6 +129,16 @@ namespace ForumBackend.Controllers
             if (comment == null)
             {
                 return NotFound();
+            }
+
+
+            // TODO: Should include admin role later as well
+            // make sure user is the owner of the post before deleting
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (comment.UserId != userId)
+            {
+                return Forbid();
             }
 
             await _commentsService.DeleteCommentAsync(comment);

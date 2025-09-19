@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using ForumBackend.DTOs.PostDTO;
+using ForumBackend.DTOs.PostDTOs;
+using ForumBackend.Mappers;
+using ForumBackend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ForumBackend.Data;
-using ForumBackend.Models;
-using ForumBackend.Services.Interfaces;
-using ForumBackend.DTOs.PostDTO;
-using ForumBackend.Mappers;
-using ForumBackend.DTOs.PostDTOs;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace ForumBackend.Controllers
@@ -50,7 +43,7 @@ namespace ForumBackend.Controllers
             {
                 return NotFound();
             }
-            
+
             var postDTO = post.ToPostDTO();
 
             return Ok(postDTO);
@@ -72,6 +65,14 @@ namespace ForumBackend.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            // get user to make sure only the owner of the post can edit it
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (post.UserId != userId)
+            {
+                return Forbid();
             }
 
             // update post values
@@ -108,7 +109,7 @@ namespace ForumBackend.Controllers
                 return Unauthorized();
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -129,6 +130,15 @@ namespace ForumBackend.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            // TODO: Should include admin role later as well
+            // make sure user is the owner of the post before deleting
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (post.UserId != userId)
+            {
+                return Forbid();
             }
 
             await _postService.DeletePostAsync(post);
