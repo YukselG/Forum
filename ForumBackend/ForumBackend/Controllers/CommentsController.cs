@@ -1,7 +1,9 @@
 ﻿using ForumBackend.DTOs.CommentDTO;
 using ForumBackend.Mappers;
+using ForumBackend.Models;
 using ForumBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -14,10 +16,12 @@ namespace ForumBackend.Controllers
     {
         //private readonly ForumContext _context;
         private readonly ICommentsService _commentsService;
+        private readonly UserManager<User> _userManager;
 
-        public CommentsController(ICommentsService commentsService)
+        public CommentsController(ICommentsService commentsService, UserManager<User> userManager)
         {
             _commentsService = commentsService;
+            _userManager = userManager;
         }
 
         // GET: api/Comments
@@ -113,6 +117,13 @@ namespace ForumBackend.Controllers
             }
 
             var comment = createCommentDTO.CreateCommentDTOtoComment(userId);
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            comment.User = user;
 
             await _commentsService.CreateCommentAsync(comment);
 

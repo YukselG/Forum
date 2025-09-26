@@ -1,5 +1,4 @@
 ﻿using ForumBackend.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace ForumBackend.DTOs.PostDTO
 {

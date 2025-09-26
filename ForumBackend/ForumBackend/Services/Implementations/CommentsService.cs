@@ -2,7 +2,6 @@
 using ForumBackend.Models;
 using ForumBackend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace ForumBackend.Services.Implementations
 {
@@ -11,11 +10,11 @@ namespace ForumBackend.Services.Implementations
         private readonly ForumContext _context;
         public CommentsService(ForumContext context)
         {
-            _context = context;    
+            _context = context;
         }
         public async Task<List<Comment>> GetAllCommentsAsync()
         {
-            return await _context.Comments.ToListAsync();
+            return await _context.Comments.Include(c => c.User).ToListAsync();
         }
 
         public async Task<Comment?> GetCommentByIdAsync(int id)

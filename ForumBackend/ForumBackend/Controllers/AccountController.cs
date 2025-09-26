@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ForumBackend.Controllers
 {
@@ -10,9 +11,11 @@ namespace ForumBackend.Controllers
     public class AccountController : ControllerBase
     {
         private readonly SignInManager<User> _signInManager;
-        public AccountController(SignInManager<User> signInManager)
+        private readonly UserManager<User> _userManager;
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpPost("logout")]
@@ -26,9 +29,22 @@ namespace ForumBackend.Controllers
 
         [Authorize]
         [HttpGet("check-auth")]
-        public IActionResult CheckAuth()
+        public async Task<IActionResult> CheckAuth()
         {
-            return Ok(new { message = "Authenticated" });
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(new { userId = user.Id, username = user.UserName });
         }
     }
 }
