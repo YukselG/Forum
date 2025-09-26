@@ -33,3 +33,16 @@ export async function CreateComment(comment: CreateCommentData) {
 
 	return response.json();
 }
+
+export async function DeleteComment(id: number) {
+	const response = await fetch(`${apiUrl}/comments/${id}`, {
+		method: "DELETE",
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error("!Resonponse.ok: Failed to delete comment");
+	}
+
+	return response.ok;
+}
