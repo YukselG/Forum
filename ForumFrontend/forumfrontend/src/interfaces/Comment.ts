@@ -13,3 +13,8 @@ export type CreateCommentData = {
 	postId: Number;
 	//dateOfCreation: Date
 };
+
+export type UpdateCommentData = {
+	id: number;
+	content: string;
+};

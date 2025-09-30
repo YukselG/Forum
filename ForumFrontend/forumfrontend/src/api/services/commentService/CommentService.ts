@@ -1,4 +1,4 @@
-import { CreateCommentData } from "../../../interfaces/Comment";
+import { CreateCommentData, UpdateCommentData } from "../../../interfaces/Comment";
 import { apiUrl } from "../../ApiURL";
 
 export default async function GetAllComments() {
@@ -42,6 +42,23 @@ export async function DeleteComment(id: number) {
 
 	if (!response.ok) {
 		throw new Error("!Resonponse.ok: Failed to delete comment");
+	}
+
+	return response.ok;
+}
+
+export async function UpdateComment(id: number, updatedComment: UpdateCommentData) {
+	const response = await fetch(`${apiUrl}/comments/${id}`, {
+		method: "PUT",
+		body: JSON.stringify(updatedComment),
+		headers: {
+			"Content-Type": "application/json",
+		},
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error("!Resonponse.ok: Failed to update comment");
 	}
 
 	return response.ok;
