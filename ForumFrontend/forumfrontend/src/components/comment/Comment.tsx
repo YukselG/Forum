@@ -17,7 +17,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
 		}
 		try {
 			await DeleteComment(comment.id);
-			window.location.reload(); // TODO: Probably find a better solution that just reloading whole page
+			window.location.reload(); // TODO: Probably find a better solution than just reloading whole page
 		} catch (error) {
 			console.error("failed to delete comment: ", error);
 		}
@@ -31,7 +31,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
 
 		try {
 			await UpdateComment(comment.id, updatedComment);
-			window.location.reload(); // TODO: Probably find a better solution that just reloading whole page
+			window.location.reload(); // TODO: Probably find a better solution than just reloading whole page
 		} catch (error) {
 			console.error("failed to update comment: ", error);
 		}
