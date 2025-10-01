@@ -58,7 +58,7 @@ export default function PostDetail() {
 	return (
 		<div className="container mt-4">
 			<div className="post-detail mb-4">
-				<Post post={post} linkToComments={false} />
+				<Post post={post} linkToComments={false} showActionButtons={true} />
 			</div>
 
 			<div className="comment-list">

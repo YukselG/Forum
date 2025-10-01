@@ -1,18 +1,18 @@
 import { Post as PostType } from "../../interfaces/Post";
 import { Link } from "react-router-dom";
 import "./Post.css";
+import { useAuth } from "../../context/authentication/AuthContext";
 
-export default function Post({ post, linkToComments = true }: { post: PostType; linkToComments?: boolean }) {
-	// const postContent = (
-	// 	<tr className="postitem" key={post.id}>
-	// 		<td className="post-title-description">
-	// 			<div className="titletd1"> {post.title}</div>
-	// 			<div className="descriptiontd2">{post.description}</div>
-	// 			<div className="authortd3">Author: {post.author}</div>
-	// 			<div className="post-lastupdated">Last updated: 12/02/24</div>
-	// 		</td>
-	// 	</tr>
-	// );
+export default function Post({
+	post,
+	linkToComments = true,
+	showActionButtons = false,
+}: {
+	post: PostType;
+	linkToComments?: boolean;
+	showActionButtons: boolean;
+}) {
+	const { isAuthenticated, user } = useAuth();
 
 	const postContent = (
 		<div className="card mb-3" key={post.id}>
@@ -25,6 +25,13 @@ export default function Post({ post, linkToComments = true }: { post: PostType; 
 				<p className="card-text">
 					<small className="text-muted">Created at: {new Date(post.dateOfCreation).toLocaleString()} </small>
 				</p>
+
+				{showActionButtons && isAuthenticated && user?.id === post.userId && (
+					<div className="mt-2">
+						<button className="btn btn-sm btn-warning me-2">Edit</button>
+						<button className="btn btn-sm btn-danger">Delete</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);
