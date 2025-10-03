@@ -32,3 +32,16 @@ export async function CreatePost(post: CreatePostData) {
 
 	return response.json();
 }
+
+export async function DeletePost(id: Number) {
+	const response = await fetch(`${apiUrl}/Posts/${id}`, {
+		method: "DELETE",
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error("!Resonponse.ok: Failed to delete comment");
+	}
+
+	return response.ok;
+}

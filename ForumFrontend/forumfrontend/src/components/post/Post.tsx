@@ -2,6 +2,7 @@ import { Post as PostType } from "../../interfaces/Post";
 import { Link } from "react-router-dom";
 import "./Post.css";
 import { useAuth } from "../../context/authentication/AuthContext";
+import { DeletePost } from "../../api/services/postService/PostService";
 
 export default function Post({
 	post,
@@ -13,6 +14,27 @@ export default function Post({
 	showActionButtons: boolean;
 }) {
 	const { isAuthenticated, user } = useAuth();
+
+	async function handleDelete() {
+		const confirmDeleletion = window.confirm("Are you sure you want to delete this post?");
+		if (!confirmDeleletion) {
+			return;
+		}
+		try {
+			await DeletePost(post.id);
+			window.location.reload(); // TODO: Probably find a better solution than just reloading whole page
+		} catch (error) {
+			console.error("error deleting post: ", error);
+		}
+	}
+
+	async function handleEdit() {
+		try {
+			// TODO: Call update post service
+		} catch (error) {
+			console.error("error updating post: ", error);
+		}
+	}
 
 	const postContent = (
 		<div className="card mb-3" key={post.id}>
@@ -28,8 +50,12 @@ export default function Post({
 
 				{showActionButtons && isAuthenticated && user?.id === post.userId && (
 					<div className="mt-2">
-						<button className="btn btn-sm btn-warning me-2">Edit</button>
-						<button className="btn btn-sm btn-danger">Delete</button>
+						<button onClick={handleEdit} className="btn btn-sm btn-warning me-2">
+							Edit
+						</button>
+						<button onClick={handleDelete} className="btn btn-sm btn-danger">
+							Delete
+						</button>
 					</div>
 				)}
 			</div>
