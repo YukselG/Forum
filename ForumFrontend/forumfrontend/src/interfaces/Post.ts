@@ -16,3 +16,9 @@ export type CreatePostData = {
 	categoryId: number;
 	//dateOfCreation: string;
 };
+
+export type UpdatePostData = {
+	id: number;
+	title: string;
+	description: string;
+};

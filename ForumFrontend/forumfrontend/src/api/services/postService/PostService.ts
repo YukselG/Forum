@@ -1,4 +1,4 @@
-import { CreatePostData, Post } from "../../../interfaces/Post";
+import { CreatePostData, Post, UpdatePostData } from "../../../interfaces/Post";
 import { apiUrl } from "../../ApiURL";
 
 export async function GetAllPosts() {
@@ -44,4 +44,21 @@ export async function DeletePost(id: Number) {
 	}
 
 	return response.ok;
+}
+
+export async function UpdatePost(id: number, updatedPost: UpdatePostData) {
+	const respose = await fetch(`${apiUrl}/Posts/${id}`, {
+		method: "PUT",
+		body: JSON.stringify(updatedPost),
+		headers: {
+			"Content-Type": "application/json",
+		},
+		credentials: "include",
+	});
+
+	if (!respose.ok) {
+		throw new Error("!Response.ok: Failed to update post");
+	}
+
+	return respose.ok;
 }
