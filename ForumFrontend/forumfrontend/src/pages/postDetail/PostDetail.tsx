@@ -6,19 +6,16 @@ import { Comment as CommentType, CreateCommentData } from "../../interfaces/Comm
 import "./postDetail.css";
 import GetAllComments, { CreateComment } from "../../api/services/commentService/CommentService";
 import { GetPostById } from "../../api/services/postService/PostService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/authentication/AuthContext";
-
-/* type LoaderData = {
-	post: PostType;
-	comments: CommentType[];
-}; */
 
 export default function PostDetail() {
 	const { post, comments } = useLoaderData() as { post: PostType; comments: CommentType[] };
 	const location = useLocation();
-
 	const { isAuthenticated } = useAuth();
+
+	const [sortedComments, setSortedComments] = useState<CommentType[]>(comments);
+	const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
 	// Effect to reset form when navigation occurs (successful submission of form)
 	useEffect(() => {
@@ -28,29 +25,28 @@ export default function PostDetail() {
 		}
 	}, [location]);
 
-	// return (
-	// 	<div>
-	// 		<div className="postDetail">
-	// 			<table>
-	// 				<tbody>
-	// 					<Post post={post} linkToComments={false} />
-	// 				</tbody>
-	// 			</table>
+	// run sorting when comments change or when the sort order changes
+	useEffect(() => {
+		if (!comments) return;
 
-	// 			<h2>Comments: {post.numberOfComments}</h2>
-	// 			<CommentList />
-	// 		</div>
-	// 		<div className="commentform">
-	// 			<Form method="post" id="comment-form">
-	// 				<div className="formelements">
-	// 					<span>Add a comment</span>
-	// 					<textarea name="addcomment" id="comment-input" rows={10} cols={50}></textarea>
-	// 					<button type="submit">Add comment</button>
-	// 				</div>
-	// 			</Form>
-	// 		</div>
-	// 	</div>
-	// );
+		let sorted = [...comments];
+
+		if (sortOrder == "newest") {
+			sorted.sort(
+				(comment1, comment2) => new Date(comment2.dateOfCreation).getTime() - new Date(comment1.dateOfCreation).getTime()
+			);
+		} else {
+			sorted.sort(
+				(comment1, comment2) => new Date(comment1.dateOfCreation).getTime() - new Date(comment2.dateOfCreation).getTime()
+			);
+		}
+
+		setSortedComments(sorted);
+	}, [comments, sortOrder]);
+
+	function handleSortChange(e: React.ChangeEvent<HTMLSelectElement>) {
+		setSortOrder(e.target.value as "newest" | "oldest");
+	}
 
 	if (!post) return <p>Post not found</p>;
 	if (!comments) return <p>Loading comments...</p>;
@@ -62,8 +58,18 @@ export default function PostDetail() {
 			</div>
 
 			<div className="comment-list">
-				<h3 className="h4 mb-3">Comments: {post.numberOfComments}</h3>
-				<CommentList comments={comments} />
+				<h3 className="h3 mb-3">Comments: {post.numberOfComments}</h3>
+				<div className="sort-comments mb3">
+					<label htmlFor="sort-comments">
+						<b>Sort by:</b>
+					</label>
+					<select name="sortComments" id="sort-comments" value={sortOrder} onChange={handleSortChange}>
+						<option value="newest">Newest</option>
+						<option value="oldest">Oldest</option>
+					</select>
+				</div>
+
+				<CommentList comments={sortedComments} />
 			</div>
 
 			<div className="comment-form mt-4">
@@ -104,8 +110,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 		// comments
 		const comments: CommentType[] = await GetAllComments();
 		const filteredComments = comments.filter((comment) => comment.postId === Number(params.postId));
+		const sortByOldestCommentsAtTop = filteredComments.sort(
+			(comment1, comment2) => new Date(comment1.dateOfCreation).getTime() - new Date(comment2.dateOfCreation).getTime()
+		);
 
-		return json({ post, comments: filteredComments });
+		return json({ post, comments: sortByOldestCommentsAtTop });
 	} catch (error) {
 		console.error("Failed to load post or comments:", error);
 		throw new Error("Failed to load post or comments");
