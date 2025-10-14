@@ -110,11 +110,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 		// comments
 		const comments: CommentType[] = await GetAllComments();
 		const filteredComments = comments.filter((comment) => comment.postId === Number(params.postId));
-		const sortByOldestCommentsAtTop = filteredComments.sort(
-			(comment1, comment2) => new Date(comment1.dateOfCreation).getTime() - new Date(comment2.dateOfCreation).getTime()
-		);
+		// const sortByOldestCommentsAtTop = filteredComments.sort(
+		// 	(comment1, comment2) => new Date(comment1.dateOfCreation).getTime() - new Date(comment2.dateOfCreation).getTime()
+		// );
 
-		return json({ post, comments: sortByOldestCommentsAtTop });
+		return json({ post, comments: filteredComments });
 	} catch (error) {
 		console.error("Failed to load post or comments:", error);
 		throw new Error("Failed to load post or comments");
