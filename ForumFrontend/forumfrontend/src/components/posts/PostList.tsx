@@ -3,6 +3,7 @@ import { Post as PostType } from "../../interfaces/Post";
 import Post from "../post/Post";
 import "./PostList.css";
 import { GetAllPosts } from "../../api/services/postService/PostService";
+import { useEffect, useState } from "react";
 
 const postsMock: PostType[] = [
 	{
@@ -75,30 +76,27 @@ export default function PostList() {
 		navigate(`${post.id}/comments`, { state: { post } });
 	};
 
-	// return (
-	// 	<div className="postList">
-	// 		<table>
-	// 			<thead>
-	// 				<tr>
-	// 					<th className="th1">Post</th>
-	// 					<th className="th3">Comments</th>
-	// 				</tr>
-	// 			</thead>
-	// 			<tbody>
-	// 				{posts.map((post) => (
-	// 					<div key={post.id} onClick={() => handlePostClick(post)}>
-	// 						<tr className="postitem">
-	// 							<td>
-	// 								<Post post={post} linkToComments={true} />
-	// 							</td>
-	// 							<td className="post-comments">{post.numberOfComments}</td> {/* Customize Comments */}
-	// 						</tr>
-	// 					</div>
-	// 				))}
-	// 			</tbody>
-	// 		</table>
-	// 	</div>
-	// );
+	const [sortedPosts, setSortedPosts] = useState<PostType[]>(posts);
+	const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+
+	// run sorting when the sort order changes
+	useEffect(() => {
+		if (!posts) return;
+
+		let sorted = [...posts];
+
+		if (sortOrder == "newest") {
+			sorted.sort((post1, post2) => new Date(post2.dateOfCreation).getTime() - new Date(post1.dateOfCreation).getTime());
+		} else {
+			sorted.sort((post1, post2) => new Date(post1.dateOfCreation).getTime() - new Date(post2.dateOfCreation).getTime());
+		}
+
+		setSortedPosts(sorted);
+	}, [posts, sortOrder]);
+
+	function handleSortChange(e: React.ChangeEvent<HTMLSelectElement>) {
+		setSortOrder(e.target.value as "newest" | "oldest");
+	}
 
 	return (
 		<div className="container mt-4">
@@ -108,9 +106,20 @@ export default function PostList() {
 						<th>Post</th>
 						<th>Comments</th>
 					</tr>
+					<tr>
+						<div className="sort-posts mb3">
+							<label htmlFor="sort-posts">
+								<b>Sort by:</b>
+							</label>
+							<select name="sortPosts" id="sort-posts" value={sortOrder} onChange={handleSortChange}>
+								<option value="newest">Newest</option>
+								<option value="oldest">Oldest</option>
+							</select>
+						</div>
+					</tr>
 				</thead>
 				<tbody>
-					{posts.map((post) => (
+					{sortedPosts.map((post) => (
 						<tr key={post.id} onClick={() => handlePostClick(post)} className="clickable-row col-12 mb-3">
 							<td>
 								<Post post={post} linkToComments={true} showActionButtons={false} />

@@ -46,3 +46,10 @@
 	flex: 0 0 17%;
 	font-size: x-large;
 }
+
+.sort-posts {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 10px;
+}
