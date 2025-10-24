@@ -1,13 +1,12 @@
 ﻿using ForumBackend.DTOs.PostDTO;
 using ForumBackend.DTOs.PostDTOs;
 using ForumBackend.Models;
-using Microsoft.Extensions.Hosting;
 
 namespace ForumBackend.Mappers
 {
     public static class PostMappers
     {
-        public static PostDTO ToPostDTO (this Post post)
+        public static PostDTO ToPostDTO(this Post post)
         {
             return new PostDTO
             {
@@ -21,7 +20,7 @@ namespace ForumBackend.Mappers
             };
         }
 
-        public static Post CreatePostDTOtoPost (this CreatePostDTO createPostDTO, string userId)
+        public static Post CreatePostDTOtoPost(this CreatePostDTO createPostDTO, string userId)
         {
             return new Post
             {
@@ -32,8 +31,7 @@ namespace ForumBackend.Mappers
                 CategoryId = createPostDTO.CategoryId,
             };
         }
-
-        public static void UpdatePostDTOtoPost (this Post post, UpdatePostDTO updatePostDTO)
+        public static void UpdatePostDTOtoPost(this Post post, UpdatePostDTO updatePostDTO)
         {
             post.Title = updatePostDTO.Title;
             post.Description = updatePostDTO.Description;

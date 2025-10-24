@@ -55,6 +55,14 @@ namespace ForumBackend.Services.Implementations
             return await _context.Posts.AnyAsync(post => post.Id == id);
         }
 
+        public async Task<List<Post>> SearchPostsAsync(string query)
+        {
+
+            var posts = await _context.Posts.Where(p => p.Title.Contains(query) || p.Description.Contains(query)).ToListAsync();
+
+            return posts;
+        }
+
 
         // below for baseservice
         /*protected override async Task<IEnumerable<Post>> GetAll()

@@ -150,5 +150,21 @@ namespace ForumBackend.Controllers
         {
             return await _postService.CheckIfPostExists(id);
         }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> SearchPosts([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return BadRequest();
+            }
+
+            var queriedPosts = await _postService.SearchPostsAsync(query);
+
+            var queriedPostsDTO = queriedPosts.Select(p => p.ToPostDTO());
+
+            return Ok(queriedPostsDTO);
+        }
     }
 }

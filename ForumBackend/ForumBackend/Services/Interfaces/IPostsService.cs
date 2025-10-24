@@ -15,5 +15,7 @@ namespace ForumBackend.Services.Interfaces
         Task DeletePostAsync(Post post);
 
         Task<bool> CheckIfPostExists(int id);
+
+        Task<List<Post>> SearchPostsAsync(string query);
     }
 }
