@@ -4,9 +4,11 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authentication/AuthContext";
+import { useState } from "react";
 
 export default function Header() {
 	const navigate = useNavigate();
+	const [query, setQuery] = useState("");
 
 	const { isAuthenticated, logout } = useAuth();
 
@@ -29,6 +31,15 @@ export default function Header() {
 		}
 	}
 
+	function handleSearch(e: React.FormEvent) {
+		e.preventDefault();
+		// return without doing nothing if query is empty
+		if (!query) return;
+		navigate(`/search?query=${query}&type=posts`);
+		// TODO: when navigatin back to home, the query is still saved in state - clear query here?
+		// TODO: clear query text in search input after navigating out of results page
+	}
+
 	return (
 		<div className="container">
 			<div className="row align-items-center py-3">
@@ -38,16 +49,17 @@ export default function Header() {
 					</Link>
 				</div>
 				<div className="col-md-6 col-12 mb-3 mb-md-0">
-					<form id="search-form" className="d-flex" action="" method="get">
+					<form id="search-form" className="d-flex" onSubmit={handleSearch} method="get">
 						<input
 							className="form-control me-2"
 							id="query"
 							name="query"
 							aria-label="Search"
 							placeholder="Search for a category, post or something else"
+							onChange={(e) => setQuery(e.target.value)}
 							type="search"
 						/>
-						<button type="button" className="btn btn-outline-secondary">
+						<button type="submit" className="btn btn-outline-secondary">
 							<FontAwesomeIcon icon={faSearch} />
 						</button>
 					</form>

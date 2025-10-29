@@ -62,3 +62,10 @@ export async function UpdatePost(id: number, updatedPost: UpdatePostData) {
 
 	return respose.ok;
 }
+
+export async function SearchPosts(query: string) {
+	const response = await fetch(`${apiUrl}/posts/search?query=${query}`);
+	const data = await response.json();
+
+	return data;
+}

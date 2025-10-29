@@ -15,6 +15,7 @@ import PostCreate, { action as PostCreateAction } from "./pages/postCreate/PostC
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import { AuthProvider } from "./context/authentication/AuthContext";
+import SearchResultsPage, { loader as searchReultsLoader } from "./pages/searchResultsPage/SearchResultsPage";
 function App() {
 	const router = createBrowserRouter([
 		{
@@ -50,6 +51,11 @@ function App() {
 				{
 					path: "/login",
 					element: <Login />,
+				},
+				{
+					path: "/search",
+					element: <SearchResultsPage />,
+					loader: searchReultsLoader,
 				},
 			],
 		},
