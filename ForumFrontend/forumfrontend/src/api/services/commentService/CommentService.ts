@@ -63,3 +63,10 @@ export async function UpdateComment(id: number, updatedComment: UpdateCommentDat
 
 	return response.ok;
 }
+
+export async function SearchComments(query: string) {
+	const response = await fetch(`${apiUrl}/comments/search?query=${query}`);
+	const data = await response.json();
+
+	return data;
+}

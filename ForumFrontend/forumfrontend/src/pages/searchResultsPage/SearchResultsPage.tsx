@@ -6,22 +6,55 @@ import { Comment as CommentType } from "../../interfaces/Comment";
 import Comment from "../../components/comment/Comment";
 import { User as UserType } from "../../interfaces/User";
 import { SearchPosts } from "../../api/services/postService/PostService";
+import { SearchComments } from "../../api/services/commentService/CommentService";
+import { SearchUsers } from "../../api/services/userService/UserService";
 
 export default function SearchResultsPage() {
 	const { searchResults, type, query } = useLoaderData() as { searchResults: any[]; type: string; query: string };
+
+	// from react router doc: Returns a tuple of the current URL's URLSearchParams and a function to update them. Setting the search params causes a navigation.
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	function handleTypeChange(newType: string) {
+		searchParams.set("type", newType);
+		setSearchParams(searchParams);
+	}
 
 	return (
 		<div className="container mt-4">
 			<h2>
 				Search results for <em>{query}</em>
 			</h2>
-
+			{/* --- entitiy query buttons --- */}
+			<div className="btn-group mt-3">
+				<button
+					className={`btn btn-outline-primary ${type === "posts" ? "active" : ""}`}
+					onClick={() => handleTypeChange("posts")}
+				>
+					Posts
+				</button>
+				<button
+					className={`btn btn-outline-primary ${type === "comments" ? "active" : ""}`}
+					onClick={() => handleTypeChange("comments")}
+				>
+					Comments
+				</button>
+				<button
+					className={`btn btn-outline-primary ${type === "users" ? "active" : ""}`}
+					onClick={() => handleTypeChange("users")}
+				>
+					Users
+				</button>
+			</div>
 			{searchResults.length === 0 && (
-				<p>
+				<p className="mt-3">
 					No results found for <em>{query}</em>.
 				</p>
 			)}
+			{/* --- query results --- */}
 
+			{/*  TODO: Probably sort posts and comments based on date (new/old). Also make functionality so an user can sort 
+			// TODO: For user, probably sort alphabetically? */}
 			<div className="mt-3">
 				{type === "posts" &&
 					searchResults.map((post: PostType) => <Post key={post.id} post={post} showActionButtons={false} />)}
@@ -30,9 +63,9 @@ export default function SearchResultsPage() {
 					searchResults.map((comment: CommentType) => <Comment key={comment.id} comment={comment} />)}
 
 				{type === "users" &&
-					searchResults.map((user: any) => (
+					searchResults.map((user: UserType) => (
 						<div key={user.id} className="card p-3 mb-2">
-							<strong>{user.username}</strong>
+							<strong>{user.userName}</strong>
 						</div>
 					))}
 			</div>
@@ -61,15 +94,21 @@ export async function loader({ request }: { request: Request }) {
 	try {
 		switch (type) {
 			case "comments":
-				//searchResults = await SearchComments(query);
+				searchResults = await SearchComments(query);
+				console.log(searchResults);
+
 				break;
 
 			case "users":
-				//searchResults = await SearchUsers(query);
+				searchResults = await SearchUsers(query);
+				console.log(searchResults);
+
 				break;
 
 			default:
 				searchResults = await SearchPosts(query);
+				console.log(searchResults);
+
 				break;
 		}
 
