@@ -7,5 +7,7 @@ namespace ForumBackend.Services.Interfaces
         Task<List<User>> GetAllUsersAsync();
         Task<User?> GetUserByIdAsync(string id);
         Task DeleteUserAndContentAsync(User user);
+        Task<List<User>> SearchUsersAsync(string query);
+
     }
 }

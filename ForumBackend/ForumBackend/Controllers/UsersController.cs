@@ -31,14 +31,14 @@ namespace ForumBackend.Controllers
         public async Task<ActionResult<UserDTO>> GetUser(string id)
         {
             var user = await _userService.GetUserByIdAsync(id);
-            
+
             if (user == null)
             {
                 return NotFound();
             }
 
             var userDTO = user.ToUserDTO();
-            
+
             return Ok(userDTO);
         }
 
@@ -54,7 +54,23 @@ namespace ForumBackend.Controllers
 
             await _userService.DeleteUserAndContentAsync(user);
 
-            return NoContent(); 
+            return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<SearchUserDTO>>> SearchUsers([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return BadRequest();
+            }
+
+            var queriedUsers = await _userService.SearchUsersAsync(query);
+
+            var queriedUsersDTO = queriedUsers.Select(u => u.ToSearchUserDTO());
+
+            return Ok(queriedUsersDTO);
         }
     }
 }

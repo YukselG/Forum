@@ -45,7 +45,7 @@ namespace ForumBackend.Services.Implementations
                 if (user != null)
                 {
                     var result = await _userManager.DeleteAsync(user);
-                    if(!result.Succeeded)
+                    if (!result.Succeeded)
                     {
                         throw new Exception("Faild to delete user");
                     }
@@ -62,6 +62,13 @@ namespace ForumBackend.Services.Implementations
                 _logger.LogError(e, $"Error deleting user {user.Id} and content");
                 throw;
             }
+        }
+
+        public async Task<List<User>> SearchUsersAsync(string query)
+        {
+            var users = await _context.Users.Where(u => u.UserName.Contains(query)).ToListAsync();
+
+            return users;
         }
     }
 }
