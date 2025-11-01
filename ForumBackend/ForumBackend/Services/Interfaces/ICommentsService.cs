@@ -10,5 +10,6 @@ namespace ForumBackend.Services.Interfaces
         Task UpdateCommentAsync(Comment comment);
         Task DeleteCommentAsync(Comment comment);
         Task<bool> CheckIfCommentExists(int id);
+        Task<List<Comment>> SearchCommentsAsync(string query);
     }
 }

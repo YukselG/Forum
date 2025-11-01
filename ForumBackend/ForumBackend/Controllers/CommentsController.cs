@@ -161,5 +161,21 @@ namespace ForumBackend.Controllers
         {
             return await _commentsService.CheckIfCommentExists(id);
         }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> SearchComments([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return BadRequest();
+            }
+
+            var queriedComments = await _commentsService.SearchCommentsAsync(query);
+
+            var queriedCommentsDTO = queriedComments.Select(c => c.ToCommentDTO());
+
+            return Ok(queriedCommentsDTO);
+        }
     }
 }

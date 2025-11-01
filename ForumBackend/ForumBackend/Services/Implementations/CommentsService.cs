@@ -46,5 +46,12 @@ namespace ForumBackend.Services.Implementations
         {
             return await _context.Comments.AnyAsync(comment => comment.Id == id);
         }
+        public async Task<List<Comment>> SearchCommentsAsync(string query)
+        {
+
+            var comments = await _context.Comments.Where(c => c.Content.Contains(query)).ToListAsync();
+
+            return comments;
+        }
     }
 }

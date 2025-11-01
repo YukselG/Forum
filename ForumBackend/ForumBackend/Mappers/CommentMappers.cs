@@ -12,7 +12,7 @@ namespace ForumBackend.Mappers
                 Id = comment.Id,
                 Content = comment.Content,
                 UserId = comment.UserId,
-                Username = comment.User.UserName ?? string.Empty,
+                // Username = comment.User.UserName ?? string.Empty,
                 DateOfCreation = comment.DateOfCreation,
                 PostId = comment.PostId,
             }; ;
