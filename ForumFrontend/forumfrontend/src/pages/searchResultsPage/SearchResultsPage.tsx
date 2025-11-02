@@ -95,18 +95,29 @@ export async function loader({ request }: { request: Request }) {
 		switch (type) {
 			case "comments":
 				searchResults = await SearchComments(query);
+				// sort it to show newest as default (maybe add sort option?)
+				searchResults.sort(
+					(comment1, comment2) =>
+						new Date(comment2.dateOfCreation).getTime() - new Date(comment1.dateOfCreation).getTime()
+				);
 				console.log(searchResults);
 
 				break;
 
 			case "users":
 				searchResults = await SearchUsers(query);
+				// sort alphabetically
+				searchResults.sort();
 				console.log(searchResults);
 
 				break;
 
 			default:
 				searchResults = await SearchPosts(query);
+				// sort it to show newest as default (maybe add sort option?)
+				searchResults.sort(
+					(post1, post2) => new Date(post2.dateOfCreation).getTime() - new Date(post1.dateOfCreation).getTime()
+				);
 				console.log(searchResults);
 
 				break;
