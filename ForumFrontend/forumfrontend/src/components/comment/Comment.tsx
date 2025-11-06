@@ -4,11 +4,31 @@ import { useAuth } from "../../context/authentication/AuthContext";
 import { Comment as CommentType } from "../../interfaces/Comment";
 import { UpdateCommentData } from "../../interfaces/Comment";
 import "./Comment.css";
+import { useNavigate } from "react-router-dom";
+import { GetPostById } from "../../api/services/postService/PostService";
 
-export default function Comment({ comment }: { comment: CommentType }) {
+export default function Comment({ comment, linkToPost }: { comment: CommentType; linkToPost: boolean }) {
+	const navigate = useNavigate();
 	const { isAuthenticated, user } = useAuth();
 	const [editMode, setEditMode] = useState(false);
 	const [editedContent, setEditedContent] = useState(comment.content);
+
+	async function handleNavigateToPost() {
+		if (!linkToPost) return; // only possible to navigate when in a results page
+
+		try {
+			const post = await GetPostById(comment.postId);
+
+			if (!post) return;
+			const categoryId = post.categoryId;
+
+			if (!categoryId) return;
+
+			navigate(`/${categoryId}/posts/${post.id}/comments`);
+		} catch (error) {
+			console.error("Failed to navigate to post:", error);
+		}
+	}
 
 	async function handleDelete() {
 		const confirmDeletion = window.confirm("Are you sure you want to delete this comment?");
@@ -37,7 +57,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
 		}
 	}
 
-	return (
+	const commentContent = (
 		<div className="card">
 			<div className="card-body">
 				{editMode ? (
@@ -74,5 +94,13 @@ export default function Comment({ comment }: { comment: CommentType }) {
 				)}
 			</div>
 		</div>
+	);
+
+	return linkToPost ? (
+		<div onClick={handleNavigateToPost} style={{ cursor: "pointer" }}>
+			{commentContent}
+		</div>
+	) : (
+		<div>{commentContent}</div>
 	);
 }

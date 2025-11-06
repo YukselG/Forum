@@ -60,7 +60,7 @@ export default function SearchResultsPage() {
 					searchResults.map((post: PostType) => <Post key={post.id} post={post} showActionButtons={false} />)}
 
 				{type === "comments" &&
-					searchResults.map((comment: CommentType) => <Comment key={comment.id} comment={comment} />)}
+					searchResults.map((comment: CommentType) => <Comment key={comment.id} comment={comment} linkToPost={true} />)}
 
 				{type === "users" &&
 					searchResults.map((user: UserType) => (

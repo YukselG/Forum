@@ -121,7 +121,7 @@ export default function CommentList({ comments }: { comments: CommentType[] }) {
 		<div className="row mt-4">
 			{comments.map((comment) => (
 				<div className="" key={comment.id}>
-					<Comment comment={comment} />
+					<Comment comment={comment} linkToPost={false} />
 				</div>
 			))}
 		</div>

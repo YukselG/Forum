@@ -129,5 +129,5 @@ export default function Post({
 		</div>
 	);
 
-	return linkToComments ? <Link to={`${post.id}/comments`}>{postContent}</Link> : postContent;
+	return linkToComments ? <Link to={`/${post.categoryId}/posts/${post.id}/comments`}>{postContent}</Link> : postContent;
 }
