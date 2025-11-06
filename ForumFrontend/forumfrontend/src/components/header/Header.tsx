@@ -2,13 +2,14 @@ import sitelogo from "./ylogogreenyellow.jpeg";
 import "./Header.css";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authentication/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header() {
 	const navigate = useNavigate();
 	const [query, setQuery] = useState("");
+	const location = useLocation();
 
 	const { isAuthenticated, logout } = useAuth();
 
@@ -36,9 +37,15 @@ export default function Header() {
 		// return without doing nothing if query is empty
 		if (!query) return;
 		navigate(`/search?query=${query}&type=posts`);
-		// TODO: when navigatin back to home, the query is still saved in state - clear query here?
-		// TODO: clear query text in search input after navigating out of results page
 	}
+
+	// Reset query state to empty string when leaving the /search route
+	// also search input field clears (value bound to query)
+	useEffect(() => {
+		if (!location.pathname.startsWith("/search")) {
+			setQuery("");
+		}
+	}, [location]);
 
 	return (
 		<div className="container">
@@ -55,6 +62,7 @@ export default function Header() {
 							id="query"
 							name="query"
 							aria-label="Search"
+							value={query}
 							placeholder="Search for a category, post or something else"
 							onChange={(e) => setQuery(e.target.value)}
 							type="search"
@@ -86,37 +94,3 @@ export default function Header() {
 		</div>
 	);
 }
-
-/* export default function Header() {
-	return (
-		<>
-			<div className="headercontent">
-				<Link to={`/`}>
-					<img className="image" src={sitelogo} alt="site logo" />
-				</Link>
-				<form id="search-form" action="" method="get" className="">
-					<div>
-						<input
-							className=""
-							id="query"
-							name="query"
-							aria-label="Search"
-							placeholder="Search for a category, post or something else"
-							type="search"
-						/>
-					</div>
-					<div>
-						<button type="button" className="">
-							<FontAwesomeIcon icon={faSearch} />
-						</button>
-					</div>
-				</form>
-				<div className="user">
-					<button>Register</button>
-					<button>Login</button>
-				</div>
-			</div>
-		</>
-	);
-}
- */
