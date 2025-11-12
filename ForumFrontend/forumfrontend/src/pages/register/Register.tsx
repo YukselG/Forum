@@ -1,8 +1,9 @@
 import { FormEvent, useState } from "react";
 import { Form, Link, useNavigate } from "react-router-dom";
+import RegisterUser from "../../api/services/accountService/RegisterService";
 
 export default function Register() {
-	const [username, setUsername] = useState("");
+	const [userName, setUserName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,12 +27,11 @@ export default function Register() {
 		}
 
 		try {
-			// TODO: Replace with actual registration logic
-			// const response = await registerUser({ username, email, password });
-			// if (response.success) {
-			//     navigate('/login');
-			// }
-			console.log("Registration submitted", { username, email });
+			const response = await RegisterUser({ email, password, userName });
+			if (response.success) {
+				navigate("/login");
+			}
+			// console.log("Registration submitted", { userName, email });
 			navigate("/login");
 		} catch (err) {
 			setError("Registration failed. Please try again.");
@@ -59,8 +59,8 @@ export default function Register() {
 										type="text"
 										className="form-control"
 										id="username"
-										value={username}
-										onChange={(e) => setUsername(e.target.value)}
+										value={userName}
+										onChange={(e) => setUserName(e.target.value)}
 										required
 									/>
 								</div>
