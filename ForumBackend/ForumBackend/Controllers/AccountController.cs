@@ -1,8 +1,11 @@
-﻿using ForumBackend.Models;
+﻿using ForumBackend.DTOs.RegisterDTO;
+using ForumBackend.Mappers;
+using ForumBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+
 
 namespace ForumBackend.Controllers
 {
@@ -45,6 +48,35 @@ namespace ForumBackend.Controllers
             }
 
             return Ok(new { userId = user.Id, username = user.UserName });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem(ModelState);
+
+            // create new user
+            var user = registerDTO.RegisterDTOtoUser();
+
+            var result = await _userManager.CreateAsync(user, registerDTO.Password);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Registration failed.",
+                    result.Errors,
+                });
+            }
+
+            return Ok(new
+            {
+                success = true,
+                message = "Registration successful!"
+            });
         }
     }
 }

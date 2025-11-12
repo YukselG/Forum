@@ -1,18 +1,12 @@
+using dotenv.net;
 using ForumBackend.Data;
+using ForumBackend.Models;
+using ForumBackend.Services.HelperServices;
 using ForumBackend.Services.Implementations;
 using ForumBackend.Services.Interfaces;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using ForumBackend.Models;
-using dotenv.net;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using ForumBackend.Services.HelperServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +40,13 @@ builder.Services.AddControllers();
 
 // Activate Identity APIs
 builder.Services.AddIdentityApiEndpoints<User>().AddRoles<Role>().AddEntityFrameworkStores<ForumContext>().AddUserManager<CustomUserManager>();
+
+// require unique mail 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+
+});
 //builder.Services.AddIdentityCore<User>().AddRoles<User>().AddEntityFrameworkStores<ForumContext>();
 
 // the below is for cookie-based authentication. Suited for browsers, but not mobile
@@ -166,7 +167,29 @@ using (var scope = app.Services.CreateScope())
     await seeder.SeedRolesAsync();
 }
 
+
+// Block the default /register endpoint
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.Equals("/register", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
+        context.Response.ContentType = "application/json";
+        var errorResponse = new
+        {
+            status = 405,
+            error = "Method Not Allowed",
+            message = "The default /register endpoint is disabled. Use /api/account/register instead."
+        };
+        await context.Response.WriteAsJsonAsync(errorResponse);
+        return; // skip the next middleware
+    }
+
+    await next(); // continue normally for other endpoints
+});
+
 app.MapIdentityApi<User>().AllowAnonymous();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

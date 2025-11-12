@@ -1,5 +1,4 @@
 ﻿using ForumBackend.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -29,6 +28,7 @@ namespace ForumBackend.Services.HelperServices
         {
             var result = await base.CreateAsync(user, password);
 
+            // assign role to user
             if (result.Succeeded)
             {
                 // Check if NormalUser role exists (it should, but just in case)
