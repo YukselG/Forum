@@ -12,8 +12,16 @@ export async function LoginUser(loginCredentials: LoginCredentials) {
 		credentials: "include",
 	});
 
+	// Read response body safely
+	let responseBody: string | undefined;
+	try {
+		responseBody = await response.text();
+	} catch {
+		responseBody = undefined;
+	}
+
 	if (!response.ok) {
-		throw new Error("Failed to login");
+		throw new Error(`Failed to login. \n Response body: \n ${responseBody}`);
 	}
 
 	// check if response has content
@@ -28,7 +36,13 @@ export async function LoginUser(loginCredentials: LoginCredentials) {
 
 	// If Content-Type is JSON, parse it
 	if (contentType.includes("application/json")) {
-		const json = await response.json();
-		return json;
+		try {
+			return JSON.parse(responseBody!);
+		} catch {
+			console.warn("Response not valid JSON:", responseBody);
+			return responseBody;
+		}
 	}
+
+	return responseBody;
 }

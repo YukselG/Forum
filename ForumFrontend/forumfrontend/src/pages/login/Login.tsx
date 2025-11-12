@@ -21,7 +21,7 @@ export default function Login() {
 			const formData = new FormData(e.currentTarget);
 
 			const loginCredentials: LoginCredentials = {
-				email: formData.get("email") as string,
+				email: formData.get("username") as string,
 				password: formData.get("password") as string,
 			};
 
@@ -47,18 +47,10 @@ export default function Login() {
 							)}
 							<Form onSubmit={handleSubmit} method="post" className="form-create" id="login-form">
 								<div className="mb-3">
-									<label htmlFor="email" className="form-label">
-										Email address
+									<label htmlFor="username" className="form-label">
+										Username
 									</label>
-									<input
-										name="email"
-										type="email"
-										className="form-control"
-										id="email"
-										//value={email}
-										//onChange={(e) => setEmail(e.target.value)}
-										required
-									/>
+									<input name="username" type="text" className="form-control" id="username" required />
 								</div>
 								<div className="mb-3">
 									<label htmlFor="password" className="form-label">
