@@ -35,6 +35,25 @@ namespace ForumBackend.Controllers
             return Ok(commentsDTO);
         }
 
+        [AllowAnonymous]
+        [HttpGet("postComments/{postId}")]
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetCommentsFromPost(int postId)
+        {
+            if (postId <= 0)
+            {
+                return BadRequest(new { message = "PostId must be positive" });
+            }
+
+            // TODO: What if postId does not exist? Check here or in service?
+
+            var comments = await _commentsService.GetAllCommentsFromPostAsync(postId);
+
+            var commentsDTO = comments.Select((c) => c.ToCommentDTO());
+
+            return Ok(commentsDTO);
+
+        }
+
         // GET: api/Comments/5
         [AllowAnonymous]
         [HttpGet("{id}")]

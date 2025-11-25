@@ -17,6 +17,11 @@ namespace ForumBackend.Services.Implementations
             return await _context.Comments.Include(c => c.User).ToListAsync();
         }
 
+        public async Task<List<Comment>> GetAllCommentsFromPostAsync(int postId)
+        {
+            return await _context.Comments.Where((c) => c.PostId == postId).Include(c => c.User).ToListAsync();
+        }
+
         public async Task<Comment?> GetCommentByIdAsync(int id)
         {
             return await _context.Comments.FindAsync(id);

@@ -5,6 +5,7 @@ namespace ForumBackend.Services.Interfaces
     public interface ICommentsService
     {
         Task<List<Comment>> GetAllCommentsAsync();
+        Task<List<Comment>> GetAllCommentsFromPostAsync(int postId);
         Task<Comment?> GetCommentByIdAsync(int id);
         Task<Comment> CreateCommentAsync(Comment comment);
         Task UpdateCommentAsync(Comment comment);
