@@ -9,6 +9,14 @@ export default async function GetAllComments() {
 	return data;
 }
 
+export async function GetAllCommentsFromPost(id: Number) {
+	const response = await fetch(`${apiUrl}/comments/postComments/${id}`);
+
+	const data = await response.json();
+
+	return data;
+}
+
 export async function GetCommentById(id: Number) {
 	const response = await fetch(`${apiUrl}/Comments/${id}`);
 

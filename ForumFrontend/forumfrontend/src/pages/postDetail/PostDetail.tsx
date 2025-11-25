@@ -4,7 +4,7 @@ import Post from "../../components/post/Post";
 import { Post as PostType } from "../../interfaces/Post";
 import { Comment as CommentType, CreateCommentData } from "../../interfaces/Comment";
 import "./postDetail.css";
-import GetAllComments, { CreateComment } from "../../api/services/commentService/CommentService";
+import GetAllComments, { CreateComment, GetAllCommentsFromPost } from "../../api/services/commentService/CommentService";
 import { GetPostById } from "../../api/services/postService/PostService";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/authentication/AuthContext";
@@ -108,13 +108,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 		const post = await GetPostById(postId);
 
 		// comments
-		const comments: CommentType[] = await GetAllComments();
-		const filteredComments = comments.filter((comment) => comment.postId === Number(params.postId));
-		// const sortByOldestCommentsAtTop = filteredComments.sort(
-		// 	(comment1, comment2) => new Date(comment1.dateOfCreation).getTime() - new Date(comment2.dateOfCreation).getTime()
-		// );
+		const comments: CommentType[] = await GetAllCommentsFromPost(postId);
 
-		return json({ post, comments: filteredComments });
+		return json({ post, comments });
 	} catch (error) {
 		console.error("Failed to load post or comments:", error);
 		throw new Error("Failed to load post or comments");
