@@ -3,7 +3,7 @@ export interface Post {
 	title: string;
 	description: string;
 	userId: string;
-	author: string;
+	username: string;
 	dateOfCreation: Date;
 	numberOfComments: number;
 	categoryId: number;

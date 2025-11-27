@@ -8,6 +8,7 @@ namespace ForumBackend.DTOs.PostDTO
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
         public int NumberOfComments { get; set; }
         public int CategoryId { get; set; }

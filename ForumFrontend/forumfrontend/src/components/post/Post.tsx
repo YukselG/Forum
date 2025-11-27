@@ -107,7 +107,7 @@ export default function Post({
 						<h5 className="card-title">{post.title}</h5>
 						<p className="card-text">{post.description}</p>
 						<p className="card-text">
-							<small className="text-muted">Author: {post.author}</small>
+							<small className="text-muted">Author: {post.username}</small>
 						</p>
 						<p className="card-text">
 							<small className="text-muted">Created at: {new Date(post.dateOfCreation).toLocaleString()} </small>

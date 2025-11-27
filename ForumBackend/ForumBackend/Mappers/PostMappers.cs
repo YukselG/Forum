@@ -14,6 +14,7 @@ namespace ForumBackend.Mappers
                 Title = post.Title,
                 Description = post.Description,
                 UserId = post.UserId,
+                Username = post.User.UserName,
                 DateOfCreation = post.DateOfCreation,
                 NumberOfComments = post.Comments.Count,
                 CategoryId = post.CategoryId,

@@ -77,7 +77,7 @@ export default function Comment({ comment, linkToPost }: { comment: CommentType;
 				) : (
 					<>
 						<p className="card-text">{comment.content}</p>
-						<p className="card-author">By: {comment.author}</p>
+						<p className="card-author">By: {comment.username}</p>
 						<p className="card-date text-muted">Commented at: {new Date(comment.dateOfCreation).toLocaleString()}</p>
 
 						{isAuthenticated && user?.id == comment.userId && (

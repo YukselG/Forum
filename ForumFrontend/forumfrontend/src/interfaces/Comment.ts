@@ -2,7 +2,7 @@ export interface Comment {
 	id: number;
 	content: string;
 	userId: string;
-	author: string;
+	username: string;
 	dateOfCreation: Date;
 	postId: number;
 }

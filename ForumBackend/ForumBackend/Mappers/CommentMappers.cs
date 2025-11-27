@@ -12,10 +12,10 @@ namespace ForumBackend.Mappers
                 Id = comment.Id,
                 Content = comment.Content,
                 UserId = comment.UserId,
-                // Username = comment.User.UserName ?? string.Empty,
+                Username = comment.User.UserName,
                 DateOfCreation = comment.DateOfCreation,
                 PostId = comment.PostId,
-            }; ;
+            };
         }
 
         public static Comment CreateCommentDTOtoComment(this CreateCommentDTO createCommentDTO, string userId)
