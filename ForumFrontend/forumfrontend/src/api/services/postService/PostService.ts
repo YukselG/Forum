@@ -3,9 +3,15 @@ import { apiUrl } from "../../ApiURL";
 
 export async function GetAllPosts() {
 	const response = await fetch(`${apiUrl}/Posts`);
-	console.log(response);
 	const data = await response.json();
-	console.log(data);
+
+	return data;
+}
+
+export async function GetAllPostsFromCategory(id: Number) {
+	const response = await fetch(`${apiUrl}/posts/categoryPosts/${id}`);
+	const data = await response.json();
+
 	return data;
 }
 

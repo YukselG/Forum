@@ -15,12 +15,17 @@ namespace ForumBackend.Services.Implementations
 
         public async Task<List<Post>> GetAllPostsAsync()
         {
-            return await _context.Posts.Include(p => p.Comments).ToListAsync();
+            return await _context.Posts.Include(p => p.User).Include(p => p.Comments).ToListAsync();
+        }
+
+        public async Task<List<Post>> GetAllPostsFromCategoryAsync(int categoryId)
+        {
+            return await _context.Posts.Where((p) => p.CategoryId == categoryId).Include((p) => p.User).Include((p) => p.Comments).ToListAsync();
         }
 
         public async Task<Post?> GetPostByIdAsync(int id)
         {
-            return await _context.Posts.Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Posts.Include(p => p.User).Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Post> CreatePostAsync(Post post)
@@ -62,6 +67,8 @@ namespace ForumBackend.Services.Implementations
 
             return posts;
         }
+
+
 
 
         // below for baseservice

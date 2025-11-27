@@ -5,6 +5,7 @@ namespace ForumBackend.Services.Interfaces
     public interface IPostsService
     {
         Task<List<Post>> GetAllPostsAsync();
+        Task<List<Post>> GetAllPostsFromCategoryAsync(int categoryId);
 
         Task<Post?> GetPostByIdAsync(int id);
 

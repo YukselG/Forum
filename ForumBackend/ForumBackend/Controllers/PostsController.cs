@@ -32,6 +32,15 @@ namespace ForumBackend.Controllers
             return Ok(postsDTO);
         }
 
+        [AllowAnonymous]
+        [HttpGet("categoryPosts/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostsFromCategory(int categoryId)
+        {
+            var posts = await _postService.GetAllPostsFromCategoryAsync(categoryId);
+            var postsDTO = posts.Select(p => p.ToPostDTO());
+            return Ok(postsDTO);
+        }
+
         // GET: api/Posts/5
         [AllowAnonymous]
         [HttpGet("{id}")]
